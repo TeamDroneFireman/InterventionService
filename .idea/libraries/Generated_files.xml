@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/PoC_Express/node_modules/ipaddr.js/src/ipaddr.js" />
+        <item url="file://$PROJECT_DIR$/PoC_Express/node_modules/ipaddr.js/test/ipaddr.test.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/PoC_Express/node_modules/ipaddr.js/src/ipaddr.js" />
+      <root url="file://$PROJECT_DIR$/PoC_Express/node_modules/ipaddr.js/test/ipaddr.test.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
