@@ -32,7 +32,7 @@
     "dataSource": "db",
     "public": false
   },
-  "drone": {
+  "Drone": {
     "dataSource": "db",
     "public": true
   }

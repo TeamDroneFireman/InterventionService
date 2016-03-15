@@ -1,6 +1,6 @@
 {
-  "name": "drone",
-  "base": "Model",
+  "name": "Drone",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
