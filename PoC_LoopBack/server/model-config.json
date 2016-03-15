@@ -31,5 +31,9 @@
   "Role": {
     "dataSource": "db",
     "public": false
+  },
+  "drone": {
+    "dataSource": "db",
+    "public": true
   }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectTasksOptions">
-    <TaskOptions isEnabled="true">
+    <TaskOptions isEnabled="false">
       <option name="arguments" value="--map --map --compile $FileName$" />
       <option name="checkSyntaxErrors" value="true" />
       <option name="description" value="Compiles .coffee files into .js files" />
@@ -15,7 +15,7 @@
           <FilterInfo>
             <option name="description" value="coffee error format" />
             <option name="name" value="coffee" />
-            <option name="regExp" value="$FILE_PATH$:$LINE$:$COLUMN$: $MESSAGE$$" />
+            <option name="regExp" value="$PROJECT_DIR$/../PoCBackend:$LINE$:$COLUMN$: $MESSAGE$$" />
           </FilterInfo>
         </array>
       </option>
