@@ -31,3 +31,13 @@ node_modules
 
 # Optional REPL history
 .node_repl_history
+*.csv
+*.dat
+*.sublime-*
+*.swo
+*.swp
+*.xml
+.DS_Store
+.idea
+.project
+npm-debug.log
