@@ -13,7 +13,11 @@
       "./mixins"
     ]
   },
-  "Drone": {
+  "drone": {
+    "dataSource": "db",
+    "public": true
+  },
+  "command": {
     "dataSource": "db",
     "public": true
   }

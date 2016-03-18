@@ -1,21 +1,13 @@
 {
-  "name": "drone",
+  "name": "command",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "stringConnect": {
+    "key": {
       "type": "string",
-      "required": true
-    },
-    "lastUpdate": {
-      "type": "date",
-      "required": true
-    },
-    "status": {
-      "type": "date",
       "required": true
     },
     "geoPosition": {
