@@ -4,12 +4,12 @@
     "connector": "memory"
   },
   "mongodb_dev": {
-    "name": "mongodb_dev",
-    "connector": "mongodb",
     "host": "127.0.0.1",
+    "port": 27017,
     "database": "mongo-db1",
     "username": "admin",
     "password": "",
-    "port": 27017
+    "name": "mongodb_dev",
+    "connector": "mongodb"
   }
 }
