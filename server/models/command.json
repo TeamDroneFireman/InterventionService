@@ -1,6 +1,6 @@
 {
   "name": "command",
-  "base": "PersistedModel",
+  "plural": "commands",
   "idInjection": true,
   "options": {
     "validateUpsert": true
