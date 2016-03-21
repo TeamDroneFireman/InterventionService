@@ -14,11 +14,11 @@
     ]
   },
   "drone": {
-    "dataSource": "db",
+    "dataSource": "mongodb_dev",
     "public": true
   },
   "command": {
-    "dataSource": "db",
+    "dataSource": "mongodb_dev",
     "public": true
   }
 }

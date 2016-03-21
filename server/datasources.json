@@ -2,5 +2,14 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "mongodb_dev": {
+    "name": "mongodb_dev",
+    "connector": "mongodb",
+    "host": "127.0.0.1",
+    "database": "mongo-db1",
+    "username": "admin",
+    "password": "",
+    "port": 27017
   }
 }

@@ -15,7 +15,7 @@
       "required": true
     },
     "status": {
-      "type": "date",
+      "type": "string",
       "required": true
     },
     "geoPosition": {
