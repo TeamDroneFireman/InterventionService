@@ -6,7 +6,7 @@
   "mongodb_dev": {
     "name": "mongodb_dev",
     "connector": "mongodb",
-    "host": "127.0.0.1",
+    "host": "localhost",
     "database": "mongo-db1",
     "username": "admin",
     "password": "",
