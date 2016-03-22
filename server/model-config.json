@@ -18,7 +18,7 @@
     "public": true
   },
   "command": {
-    "dataSource": null,
+    "dataSource": "db",
     "public": true
   }
 }
