@@ -1,7 +1,7 @@
 {
   "name": "command",
   "plural": "commands",
-  "base": "Model",
+  "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
