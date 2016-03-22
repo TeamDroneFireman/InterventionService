@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "start": "node .",
+    "start_DEV": "NODE_ENV=\"DEV\" node .",
+    "start_PROD": "NODE_ENV=\"PROD\" node .",
     "pretest": "jshint .",
     "posttest": "nsp check"
   },
