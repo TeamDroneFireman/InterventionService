@@ -19,13 +19,6 @@
     "creationDate": {
       "type": "date",
       "required": true
-    },
-    "address": {
-      "type": "object"
-    },
-    "interventionCode": {
-      "type": "string",
-      "required": true
     }
   },
   "validations": [],
