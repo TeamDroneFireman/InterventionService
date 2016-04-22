@@ -13,7 +13,7 @@
       "default": "Intervention_Name"
     },
     "creationDate": {
-      "type": "datetime",
+      "type": "date",
       "required": true
     },
     "address": {
