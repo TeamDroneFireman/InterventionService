@@ -7,7 +7,16 @@ module.exports = function(Intervention) {
    * Disable auto-generated methods
     */
   var disabledMethods = [
-    ];
+    'upsert',
+    "deleteById",
+    "updateAll",
+    "updateAttributes",
+    "createChangeStream",
+    "exists",
+    "find",
+    "findOne",
+    "count",
+    "findById"];
   for(method in disabledMethods){
     console.log(serviceName+"disabled auto-generated method \"" + disabledMethods[method]+"\"");
     Intervention.disableRemoteMethod(disabledMethods[method], true);
@@ -43,13 +52,11 @@ module.exports = function(Intervention) {
   var isConnected = function (callback, token, userid)
   {
     //var token = "";
-
     httpUserServiceOptions.path=USERSERVICE_URL+userid+"/accessTokens/"+token+"?access_token="+token;
-    console.log("Calling : "+httpUserServiceOptions.path);
+    console.log("Calling : "+httpUserServiceOptions);
     http.get(httpUserServiceOptions, function(response){
       if(response.statusCode==200){
         console.log("User connected");
-
         callback(true);
       }else{
         console.log("User not connected");
@@ -66,7 +73,18 @@ module.exports = function(Intervention) {
    * Before every remoteMethod, check that the token correspond to the user
    */
     Intervention.beforeRemote('*', function(ctx, unused, next) {
-      next();
+      var a = "3wz5T7FNF0godeHowO105ikFaLHVYF9N92cK3TMfUOKI9RNGz2omVhCaSpcSaFgZ";
+      var userid = 1;
+      //ctx.req.headers.userid
+      isConnected(function(result, a, userid){
+          if(result){
+            console.log("User connected, remote ");
+            next();
+          } else {
+            console.log("User not connected");
+            next(new Error('You must be logged in to access database'));
+          }
+      });
   });
 
 
@@ -74,8 +92,20 @@ module.exports = function(Intervention) {
    * After every remoteMethod
    */
   Intervention.afterRemote('find', function(ctx, modelInstance, next) {
+    if(Array.isArray(modelInstance)){
+      console.log(" modelInstance is array");
+      ctx.result.forEach(function(intervention){
+        var temp = {};
+        temp[intervention]=ctx.result[intervention];
+
+        console.log("   creationDate : " +intervention.creationDate);
+      })
+    }
     next();
   });
+
+
+
 
 };
 
