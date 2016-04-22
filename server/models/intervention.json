@@ -14,7 +14,7 @@
     },
     "creationDate": {
       "type": "date",
-      "required": true
+      "required": false
     },
     "address": {
       "type": "object"
