@@ -7,13 +7,18 @@
     "validateUpsert": true
   },
   "properties": {
+    "id": {
+      "id":true,
+      "type": "string",
+      "required": true
+    },
     "name": {
       "type": "string",
       "required": true,
       "default": "Intervention_Name"
     },
     "creationDate": {
-      "type": "date",
+      "type": "datetime",
       "required": true
     },
     "address": {
