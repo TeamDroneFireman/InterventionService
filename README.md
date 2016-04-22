@@ -8,7 +8,7 @@
 ##Object model
 ```
 {
-
+test
 }
 ```
 
