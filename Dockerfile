@@ -8,4 +8,5 @@ RUN apk add nodejs
 WORKDIR /app
 ADD . /app
 RUN npm install
+EXPOSE 3000
 ENTRYPOINT [ "node", "." ]

@@ -6,7 +6,9 @@
     "start_DEV": "NODE_ENV=\"DEV\" node .",
     "start_PROD": "NODE_ENV=\"PROD\" node .",
     "pretest": "jshint .",
-    "posttest": "nsp check"
+    "posttest": "nsp check",
+    "test": "gulp test",
+    "testdev": "gulp testdev"
   },
   "dependencies": {
     "compression": "^1.0.3",
@@ -20,8 +22,17 @@
     "serve-favicon": "^2.0.1"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-bg": "0.0.8",
+    "gulp-mocha": "^2.2.0",
+    "gulp-run": "^1.6.12",
+    "gulp-wait": "0.0.2",
     "jshint": "^2.5.6",
-    "nsp": "^2.1.0"
+    "mocha": "^2.4.5",
+    "mocha-junit-reporter": "^1.11.1",
+    "nsp": "^2.1.0",
+    "supertest": "^1.2.0"
   },
   "repository": {
     "type": "",
