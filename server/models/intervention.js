@@ -10,25 +10,25 @@ module.exports = function(Intervention) {
       var droneService = Intervention.app.dataSources.droneService;
       var sigService = Intervention.app.dataSources.sigService;
       var meanService = Intervention.app.dataSources.meanService;
-      droneService.findByInterventionId(id,function(err, response) {
-        if (err) throw err;
-        if (response.error) next('> response error: ' + response.error.stack);
-        intervention.drones = response;
-        sigService.findByInterventionId(id,function(err, response) {
+        droneService.findByInterventionId(id, function (err, response) {
           if (err) throw err;
           if (response.error) next('> response error: ' + response.error.stack);
-          intervention.pointOfInterests = response;
-          meanService.findByInterventionId(id,function(err, response) {
+          intervention.drones = response;
+          sigService.findByInterventionId(id, function (err, response) {
             if (err) throw err;
             if (response.error) next('> response error: ' + response.error.stack);
-            intervention.means = response;
-            cb(null, intervention);
+            intervention.pointOfInterests = response;
+            meanService.findByInterventionId(id, function (err, response) {
+              if (err) throw err;
+              if (response.error) next('> response error: ' + response.error.stack);
+              intervention.means = response;
+              cb(null, intervention);
+            });
           });
         });
-      });
     });
   };
-  
+
   Intervention.remoteMethod('findByIdWithElements', {
     description: 'Find a model instance by id from the data source.',
     accessType: 'READ',
