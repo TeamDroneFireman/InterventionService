@@ -28,8 +28,4 @@ module.exports = function(Intervention) {
     returns: {arg: 'data', type: "intervention", root: true},
     http: {verb: 'get', path: '/:id/WithElements'}
   });
-
-
-
 };
-
