@@ -1,4 +1,19 @@
 module.exports = function(Intervention) {
+
+  Intervention.beforeRemote('*', function(ctx, unused, next) {
+    Intervention.app.datasources.auth
+    .checkAuth(ctx.req.headers.userid, ctx.req.headers.token,
+        function (err, response) {
+      if (err || response.error || response.id !== ctx.req.headers.token) {
+        var e = new Error('You must be logged in to access database');
+        e.status = 401;
+        next(e);
+      } else {
+        next();
+      }
+    });
+  });
+
   Intervention.disableRemoteMethod('deleteById', true);
   Intervention.disableRemoteMethod("updateAll", true);
   Intervention.disableRemoteMethod('createChangeStream', true);

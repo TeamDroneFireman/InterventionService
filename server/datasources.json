@@ -3,6 +3,23 @@
     "name": "db",
     "connector": "memory"
   },
+  "auth": {
+    "connector": "rest",
+    "debug": "false",
+    "operations": [{
+        "template": {
+            "method": "GET",
+            "url": "http://projetm2gla.istic.univ-rennes1.fr:12346/SITUsers/{userId}/accessTokens/{token}",
+            "headers": {
+                "accepts": "application/json",
+                "content-type": "application/json"
+            }
+        },
+        "functions": {
+            "checkAuth": ["userId", "token"]
+        }
+    }]
+  },
   "droneService": {
     "name": "droneService",
     "connector": "rest",
