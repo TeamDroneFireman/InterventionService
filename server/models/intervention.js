@@ -15,7 +15,7 @@ module.exports = function(Intervention) {
   });
 
   Intervention.disableRemoteMethod('deleteById', true);
-  Intervention.disableRemoteMethod("updateAll", true);
+  Intervention.disableRemoteMethod('updateAll', true);
   Intervention.disableRemoteMethod('createChangeStream', true);
   Intervention.disableRemoteMethod('findOne', true);
   Intervention.disableRemoteMethod('exists', true);
@@ -31,11 +31,13 @@ module.exports = function(Intervention) {
           intervention.drones = response;
           sigService.findByInterventionId(id, function (err, response) {
             if (err) throw err;
-            if (response.error) next('> response error: ' + response.error.stack);
+            if (response.error)
+              next('> response error: ' + response.error.stack);
             intervention.pointOfInterests = response;
             meanService.findByInterventionId(id, function (err, response) {
               if (err) throw err;
-              if (response.error) next('> response error: ' + response.error.stack);
+              if (response.error)
+                next('> response error: ' + response.error.stack);
               intervention.means = response;
               cb(null, intervention);
             });
@@ -49,7 +51,7 @@ module.exports = function(Intervention) {
     accessType: 'READ',
     accepts: [{ arg: 'id', type: 'any', description: 'Model id', required: true,
         http: {source: 'path'}}],
-    returns: {arg: 'data', type: "intervention", root: true},
+    returns: {arg: 'data', type: 'intervention', root: true},
     http: {verb: 'get', path: '/:id/WithElements'}
   });
 };
