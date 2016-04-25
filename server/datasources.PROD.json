@@ -1,0 +1,11 @@
+{
+  "mongodb_prod": {
+    "host": "mongo",
+    "port": 27017,
+    "database": "mongo-db1",
+    "username": "admin",
+    "password": "",
+    "name": "mongodb_prod",
+    "connector": "mongodb"
+  }
+}
