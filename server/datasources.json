@@ -10,10 +10,40 @@
       {
         "template": {
           "method": "GET",
-          "url": "http://localhost:3001/api/Drones/{id}"
+          "url": "http://localhost:3001/api/Drones/intervention/{id}"
         },
         "functions": {
-          "findById": ["id"]
+          "findByInterventionId": ["id"]
+        }
+      }
+    ]
+  },
+  "sigService": {
+    "name": "sigService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://localhost:3002/api/SIGs/intervention/{id}"
+        },
+        "functions": {
+          "findByInterventionId": ["id"]
+        }
+      }
+    ]
+  },
+  "meanService": {
+    "name": "meanService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://localhost:3002/api/Means/intervention/{id}"
+        },
+        "functions": {
+          "findByInterventionId": ["id"]
         }
       }
     ]
