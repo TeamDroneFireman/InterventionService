@@ -40,7 +40,7 @@
       {
         "template": {
           "method": "GET",
-          "url": "http://localhost:3002/api/Means/intervention/{id}"
+          "url": "http://localhost:3003/api/Means/intervention/{id}"
         },
         "functions": {
           "findByInterventionId": ["id"]
