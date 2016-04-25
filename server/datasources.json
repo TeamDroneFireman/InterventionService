@@ -2,5 +2,20 @@
   "db": {
     "name": "db",
     "connector": "memory"
+  },
+  "droneService": {
+    "name": "droneService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://localhost:3001/api/Drones/{id}"
+        },
+        "functions": {
+          "findById": ["id"]
+        }
+      }
+    ]
   }
 }
