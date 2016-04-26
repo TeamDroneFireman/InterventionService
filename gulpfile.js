@@ -9,7 +9,7 @@ var bgstart;
 gulp.task('start', bgstart = bg('node', '.'));
 
 gulp.task('test', ['start'], function () {
-  return gulp.src('./test/test.js', {read: true}).pipe(wait(1500))
+  return gulp.src('./test/test.js', {read: true}).pipe(wait(5000))
     .pipe(mocha({
             'reporter': 'mocha-junit-reporter',
             'reporterOptions': {
@@ -27,7 +27,7 @@ gulp.task('test', ['start'], function () {
 });
 
 gulp.task('testdev', ['start'], function () {
-  return gulp.src('./test/test.js', {read: true}).pipe(wait(1500))
+  return gulp.src('./test/test.js', {read: true}).pipe(wait(5000))
     .pipe(mocha({reporter: 'nyan'}))
     .once('end', function () {
       bgstart.setCallback(function () { process.exit(0); });
