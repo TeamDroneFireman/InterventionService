@@ -7,5 +7,83 @@
     "password": "",
     "name": "mongodb_prod",
     "connector": "mongodb"
+  },
+  "userService": {
+    "connector": "rest",
+    "debug": "false",
+    "operations": [{
+        "template": {
+            "method": "GET",
+            "url": "http://projetm2gla.istic.univ-rennes1.fr/api/SITUsers/{userId}/accessTokens/{token}",
+            "headers": {
+                "accepts": "application/json",
+                "content-type": "application/json",
+                "Host": "user.docker.localhost"
+            }
+        },
+        "functions": {
+            "checkAuth": ["userId", "token"]
+        }
+    }]
+  },
+  "droneService": {
+    "name": "droneService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://projetm2gla.istic.univ-rennes1.fr/api/Drones/intervention/{id}",
+          "headers": {
+              "accepts": "application/json",
+              "content-type": "application/json",
+              "Host": "drone.docker.localhost",
+          }
+        },
+        "functions": {
+          "findByInterventionId": ["id"]
+        }
+      }
+    ]
+  },
+  "sigService": {
+    "name": "sigService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://projetm2gla.istic.univ-rennes1.fr/api/SIGs/intervention/{id}",
+          "headers": {
+              "accepts": "application/json",
+              "content-type": "application/json",
+              "Host": "sig.docker.localhost"
+          }
+        },
+        "functions": {
+          "findByInterventionId": ["id"]
+        }
+      }
+    ]
+  },
+  "meanService": {
+    "name": "meanService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://projetm2gla.istic.univ-rennes1.fr/api/Means/intervention/{id}",
+          "headers": {
+              "accepts": "application/json",
+              "content-type": "application/json",
+              "Host": "mean.docker.localhost"
+          }
+        },
+        "functions": {
+          "findByInterventionId": ["id"]
+        }
+      }
+    ]
   }
 }
