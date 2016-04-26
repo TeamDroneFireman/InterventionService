@@ -1,7 +1,7 @@
 module.exports = function(Intervention) {
 /*
   Intervention.beforeRemote('*', function(ctx, unused, next) {
-    Intervention.app.datasources.auth
+    Intervention.app.datasources.userService
     .checkAuth(ctx.req.headers.userid, ctx.req.headers.token,
         function (err, response) {
       if (err || response.error || response.id !== ctx.req.headers.token) {
@@ -33,7 +33,7 @@ module.exports = function(Intervention) {
             if (err) throw err;
             if (response.error)
               next('> response error: ' + response.error.stack);
-            intervention.pointOfInterests = response;
+            intervention.SIGs = response;
             meanService.findByInterventionId(id, function (err, response) {
               if (err) throw err;
               if (response.error)
