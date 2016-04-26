@@ -14,13 +14,22 @@
     },
     "creationDate": {
       "type": "date",
-      "required": false
+      "required": true
     },
     "address": {
-      "type": "object"
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "object",
+      "required": true
     },
     "interventionCode": {
       "type": "string",
+      "required": true
+    },
+    "archived": {
+      "type": "boolean",
       "required": true
     }
   },
