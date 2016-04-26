@@ -1,4 +1,4 @@
-# Mean Service
+# Intervention Service
 This is the API service concerning the Intervention object
 
 ## Object model
