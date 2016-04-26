@@ -33,7 +33,7 @@ module.exports = function(Intervention) {
             if (err) throw err;
             if (response.error)
               next('> response error: ' + response.error.stack);
-            intervention.pointOfInterests = response;
+            intervention.SIGs = response;
             meanService.findByInterventionId(id, function (err, response) {
               if (err) throw err;
               if (response.error)
