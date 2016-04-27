@@ -24,7 +24,7 @@
       "type": "object",
       "required": true
     },
-    "interventionCode": {
+    "sinisterCode": {
       "type": "string",
       "required": true
     },
