@@ -37,7 +37,7 @@
           "headers": {
               "accepts": "application/json",
               "content-type": "application/json",
-              "Host": "drone.docker.localhost",
+              "Host": "drone.docker.localhost"
           }
         },
         "functions": {
