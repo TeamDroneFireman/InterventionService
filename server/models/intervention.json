@@ -16,10 +16,6 @@
       "type": "date",
       "required": true
     },
-    "address": {
-      "type": "object",
-      "required": true
-    },
     "location": {
       "type": "object",
       "required": true
