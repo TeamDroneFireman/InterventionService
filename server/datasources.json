@@ -3,16 +3,17 @@
     "name": "db",
     "connector": "memory"
   },
-  "auth": {
+  "userService": {
     "connector": "rest",
     "debug": "false",
     "operations": [{
         "template": {
             "method": "GET",
-            "url": "http://projetm2gla.istic.univ-rennes1.fr:12346/SITUsers/{userId}/accessTokens/{token}",
+            "url": "http://projetm2gla.istic.univ-rennes1.fr/api/SITUsers/{userId}/accessTokens/{token}",
             "headers": {
                 "accepts": "application/json",
-                "content-type": "application/json"
+                "content-type": "application/json",
+                "Host": "user.docker.localhost"
             }
         },
         "functions": {
@@ -27,7 +28,7 @@
       {
         "template": {
           "method": "GET",
-          "url": "http://localhost:3001/api/Drones/intervention/{id}"
+          "url": "http://localhost:3003/api/Drones/intervention/{id}"
         },
         "functions": {
           "findByInterventionId": ["id"]
@@ -42,7 +43,7 @@
       {
         "template": {
           "method": "GET",
-          "url": "http://localhost:3002/api/SIGs/intervention/{id}"
+          "url": "http://localhost:3004/api/SIGs/intervention/{id}"
         },
         "functions": {
           "findByInterventionId": ["id"]
@@ -57,7 +58,7 @@
       {
         "template": {
           "method": "GET",
-          "url": "http://localhost:3003/api/Means/intervention/{id}"
+          "url": "http://localhost:3002/api/Means/intervention/{id}"
         },
         "functions": {
           "findByInterventionId": ["id"]
