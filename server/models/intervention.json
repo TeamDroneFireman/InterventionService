@@ -2,7 +2,7 @@
   "name": "intervention",
   "plural": "interventions",
   "base": "PersistedModel",
-  "idInjection": false,
+  "idInjection": true,
   "options": {
     "validateUpsert": true
   },
@@ -17,7 +17,7 @@
       "required": true
     },
     "address": {
-      "type": "string",
+      "type": "object",
       "required": true
     },
     "location": {
