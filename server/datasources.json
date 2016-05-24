@@ -7,18 +7,18 @@
     "connector": "rest",
     "debug": "false",
     "operations": [{
-        "template": {
-            "method": "GET",
-            "url": "http://projetm2gla.istic.univ-rennes1.fr/api/SITUsers/{userId}/accessTokens/{token}",
-            "headers": {
-                "accepts": "application/json",
-                "content-type": "application/json",
-                "Host": "user.docker.localhost"
-            }
-        },
-        "functions": {
-            "checkAuth": ["userId", "token"]
+      "template": {
+        "method": "GET",
+        "url": "http://localhost:3000/api/SITUsers/{userId}/accessTokens/{token}",
+        "headers": {
+          "accepts": "application/json",
+          "content-type": "application/json",
+          "Host": "user.docker.localhost"
         }
+      },
+      "functions": {
+        "checkAuth": ["userId", "token"]
+      }
     }]
   },
   "droneService": {
