@@ -75,10 +75,12 @@ module.exports = function(Intervention) {
    * @param callback
    */
   Intervention.register = function(registration, callback){
-    Intervention.exists(registration.id, function(err, response) {
+    Intervention.exists(registration.interventionId, function(err, response) {
       if (response !== undefined && response.exists) {
         //get document registred devices
-        Intervention.findById(registration.id, function (err, document) {
+        Intervention.findById(
+          registration.interventionId,
+          function (err, document) {
           var registredList = document.registred;
           if (!registredList) {
             registredList = [registration.registrationId];
