@@ -76,7 +76,7 @@ module.exports = function(Intervention) {
    */
   Intervention.register = function(registration, callback){
     Intervention.exists(registration.interventionId, function(err, response) {
-      if (response !== undefined && response.exists) {
+      if (response) {
         //get document registred devices
         Intervention.findById(
           registration.interventionId,
@@ -112,7 +112,7 @@ module.exports = function(Intervention) {
    */
   Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
-      if(response.exists){
+      if(response){
         //get intervention
         Intervention.findById(interventionId, function(err, document){
           var gcm = require('node-gcm');
@@ -143,13 +143,11 @@ module.exports = function(Intervention) {
     http: {verb: 'post', path: '/:id/push/'}
   });
 
-
   /*!
    * Convert null callbacks to 404 error objects.
    * @param  {HttpContext} ctx
    * @param  {Function} cb
    */
-
   function convertNullToNotFoundError(ctx, cb) {
     if (ctx.result !== null) return cb();
 
@@ -161,5 +159,4 @@ module.exports = function(Intervention) {
     error.code = 'MODEL_NOT_FOUND';
     cb(error);
   }
-
 };
