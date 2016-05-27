@@ -27,6 +27,9 @@
     "archived": {
       "type": "boolean",
       "required": true
+    },
+    "registred": {
+      "type": "array"
     }
   },
   "validations": [],
