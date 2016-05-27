@@ -68,17 +68,22 @@ module.exports = function(Intervention) {
    * @param callback
    */
   Intervention.register = function(registration, callback){
-    // !non atomic operation, Loopback doesn't handle $addToSet mongo operator!
-    //get document registred devices
-    Intervention.findById(registration.id, function(err, document){
-      var registredList = document.registred;
-      if(!registredList){
-        registredList = [registration.registrationId];
-      }else{
-        registredList.push(registration.registrationId);
+    Intervention.exists(registration.id, function(err, response) {
+      if (response !== undefined && response.exists) {
+        // !non atomic operation, Loopback doesn't handle $addToSet mongo operator!
+        //get document registred devices
+        Intervention.findById(registration.id, function (err, document) {
+          var registredList = document.registred;
+          if (!registredList) {
+            registredList = [registration.registrationId];
+          } else {
+            registredList.push(registration.registrationId);
+          }
+          document.updateAttribute('registred', registredList);
+          callback(null, document);
+        });
       }
-      document.updateAttribute('registred', registredList);
-      callback(null,document);
+      else callback(null, {})
     });
   };
 
@@ -97,22 +102,26 @@ module.exports = function(Intervention) {
    * @param pushEvent Object contains topic and changed object Id
    */
   Intervention.push = function(interventionId, pushEvent, callback){
-    //get intervention
-    Intervention.findById(interventionId, function(err, document){
-      var gcm = require('node-gcm');
-      var jsonfile = require('jsonfile');
-      jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
-        var sender = new gcm.Sender(obj.GCMKEY);
-        var registredList = document.registred;
-        if(!registredList){
-          sender.send(
-            pushEvent,
-            {'registrationTokens': registredList},
-            function (err, response) {
-              //TODO throw error
-            });
-        }
-      });
+    Intervention.exists(interventionId, function(err, response){
+      if(response.exists){
+        //get intervention
+        Intervention.findById(interventionId, function(err, document){
+          var gcm = require('node-gcm');
+          var jsonfile = require('jsonfile');
+          jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
+            var sender = new gcm.Sender(obj.GCMKEY);
+            var registredList = document.registred;
+            if(!registredList){
+              sender.send(
+                pushEvent, {'registrationTokens': registredList},
+                function (err, response) {
+                  //TODO throw error
+                });
+            }
+          });
+        });
+      }
+      else callback(null,{});
     });
   };
 
@@ -124,7 +133,7 @@ module.exports = function(Intervention) {
     ],
     http: {verb: 'post', path: '/:id/push/'}
   });
-  
+
 
   /*!
    * Convert null callbacks to 404 error objects.
