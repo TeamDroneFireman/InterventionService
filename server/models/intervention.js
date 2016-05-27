@@ -1,4 +1,6 @@
 module.exports = function(Intervention) {
+
+    const PRIVATE_CONST_PATH = '../../private.json';
 /*
   Intervention.beforeRemote('*', function(ctx, unused, next) {
     Intervention.app.datasources.userService
@@ -22,9 +24,10 @@ module.exports = function(Intervention) {
 
   Intervention.findByIdWithElements = function(id,cb){
     Intervention.findById(id,function (err,intervention){
-      var droneService = Intervention.app.dataSources.droneService;
-      var sigService = Intervention.app.dataSources.sigService;
-      var meanService = Intervention.app.dataSources.meanService;
+      if(!err){
+        var droneService = Intervention.app.dataSources.droneService;
+        var sigService = Intervention.app.dataSources.sigService;
+        var meanService = Intervention.app.dataSources.meanService;
         droneService.findByInterventionId(id, function (err, response) {
           if (err) throw err;
           if (response.error) next('> response error: ' + response.error.stack);
@@ -43,6 +46,7 @@ module.exports = function(Intervention) {
             });
           });
         });
+      }
     });
   };
 
@@ -56,14 +60,13 @@ module.exports = function(Intervention) {
   });
 
   /***
-  * Register a new device to the push service of the intervention passed as parameter
+  * Register a new device to the push service of the given intervention
   *
-  * @param idRegistration
+  * @param registration object contains interventionId and new registration Key
   * @param callback
   */
   Intervention.register = function(registration, callback){
-    //non atomic operation because Loopback doesn't handle $addToSet mongo operator
-
+    // !non atomic operation, Loopback doesn't handle $addToSet mongo operator!
     //get document registred devices
     Intervention.findById(registration.id, function(err, document){
       var registredList = document.registred;
@@ -73,16 +76,51 @@ module.exports = function(Intervention) {
         registredList.push(registration.registrationId);
       }
       document.updateAttribute('registred', registredList);
-      document.save;
+      callback(null,document);
     });
-    callback(null,this);
-  }
+  };
 
   Intervention.remoteMethod('register', {
     description: 'add a new GCM key to an intervention',
-    isStatic: 'false',
     accepts:{arg: 'registration', type: 'object', http: {source: 'body'}},
     returns: {arg: 'data', type: 'intervention', root: true},
     http: {verb: 'post', path: '/register/'}
   });
+
+
+  /***
+  * Handle push event for the intervention passed as parameter
+  *
+  * @param interventionId
+  * @param pushEvent Object contains topic and changed object Id
+  */
+  Intervention.push = function(interventionId, pushEvent, callback){
+    //get intervention
+    Intervention.findById(interventionId, function(err, document){
+      var gcm = require('node-gcm');
+      var jsonfile = require('jsonfile');
+      jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
+        var sender = new gcm.Sender(obj.GCMKEY);
+        var registredList = document.registred;
+        if(!registredList){
+          sender.send(
+            pushEvent,
+            {'registrationTokens': registredList},
+            function (err, response) {
+              //TODO throw error
+            });
+        }
+      });
+    });
+  };
+
+  Intervention.remoteMethod('push', {
+    description: 'send push event to registred devices of the current interv.',
+    accepts:[
+      {arg: 'id', type: 'any', http: {source: 'path'}},
+      {arg: 'registration', type: 'object', http: {source: 'body'}}
+    ],
+    http: {verb: 'post', path: '/:id/push/'}
+  });
+
 };
