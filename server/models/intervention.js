@@ -1,6 +1,6 @@
 module.exports = function(Intervention) {
 
-    const PRIVATE_CONST_PATH = '../../private.json';
+    const PRIVATE_CONST_PATH = '/private.json';
 
     Intervention.disableRemoteMethod('deleteById', true);
     Intervention.disableRemoteMethod('updateAll', true);
