@@ -61,16 +61,16 @@ module.exports = function(Intervention) {
   * @param idRegistration
   * @param callback
   */
-  Intervention.register = function(id, gcmKey, callback){
+  Intervention.register = function(registration, callback){
     //non atomic operation because Loopback doesn't handle $addToSet mongo operator
 
     //get document registred devices
-    Intervention.findById(id, function(err, document){
+    Intervention.findById(registration.id, function(err, document){
       var registredList = document.registred;
       if(!registredList){
-        registredList = [gcmKey];
+        registredList = [registration.registrationId];
       }else{
-        registredList.push(gcmKey);
+        registredList.push(registration.registrationId);
       }
       document.updateAttribute('registred', registredList);
       document.save;
@@ -81,20 +81,8 @@ module.exports = function(Intervention) {
   Intervention.remoteMethod('register', {
     description: 'add a new GCM key to an intervention',
     isStatic: 'false',
-    accepts: [
-      { arg: 'id',
-        type: 'any',
-        description: 'intervention id',
-        required: true,
-        http: {source: 'path'}
-      },
-      { arg: 'gcmKey',
-        type: 'any',
-        description: 'registration key',
-        required: true,
-        http: {source: 'path'}
-      }],
+    accepts:{arg: 'registration', type: 'object', http: {source: 'body'}},
     returns: {arg: 'data', type: 'intervention', root: true},
-    http: {verb: 'post', path: '/:id/register/:gcmKey'}
+    http: {verb: 'post', path: '/register/'}
   });
 };
