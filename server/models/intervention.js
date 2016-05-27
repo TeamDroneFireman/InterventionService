@@ -1,8 +1,18 @@
 module.exports = function(Intervention) {
 
     const PRIVATE_CONST_PATH = '../../private.json';
-/*
-  Intervention.beforeRemote('*', function(ctx, unused, next) {
+
+    Intervention.disableRemoteMethod('deleteById', true);
+    Intervention.disableRemoteMethod('updateAll', true);
+    Intervention.disableRemoteMethod('createChangeStream', true);
+    Intervention.disableRemoteMethod('findOne', true);
+    Intervention.disableRemoteMethod('exists', true);
+
+    /***
+    * auth required before all methods
+    */
+    /*
+    Intervention.beforeRemote('*', function(ctx, unused, next) {
     Intervention.app.datasources.userService
     .checkAuth(ctx.req.headers.userid, ctx.req.headers.token,
         function (err, response) {
@@ -14,12 +24,8 @@ module.exports = function(Intervention) {
         next();
       }
     });
-  });
-*/
-  Intervention.disableRemoteMethod('deleteById', true);
-  Intervention.disableRemoteMethod('updateAll', true);
-  Intervention.disableRemoteMethod('createChangeStream', true);
-  Intervention.disableRemoteMethod('findOne', true);
+    });
+    */
 
   Intervention.findByIdWithElements = function(id,cb){
     Intervention.findById(id,function (err,intervention){
@@ -63,6 +69,7 @@ module.exports = function(Intervention) {
 
   /***
    * Register a new device to the push service of the given intervention
+   * non atomic operation, Loopback doesn't handle $addToSet mongo operator!
    *
    * @param registration object contains interventionId and new registration Key
    * @param callback
@@ -70,7 +77,6 @@ module.exports = function(Intervention) {
   Intervention.register = function(registration, callback){
     Intervention.exists(registration.id, function(err, response) {
       if (response !== undefined && response.exists) {
-        // !non atomic operation, Loopback doesn't handle $addToSet mongo operator!
         //get document registred devices
         Intervention.findById(registration.id, function (err, document) {
           var registredList = document.registred;
@@ -82,8 +88,9 @@ module.exports = function(Intervention) {
           document.updateAttribute('registred', registredList);
           callback(null, document);
         });
+      }else{
+        callback(null, {});
       }
-      else callback(null, {})
     });
   };
 
