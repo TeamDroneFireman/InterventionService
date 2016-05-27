@@ -106,9 +106,9 @@ module.exports = function(Intervention) {
    * Handle push event for the intervention passed as parameter
    *
    * @param interventionId
-   * @param pushEvent Object contains topic and changed object Id
+   * @param message Object contains topic and changed object Id
    */
-  Intervention.push = function(interventionId, pushEvent, callback){
+  Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
       if(response.exists){
         //get intervention
@@ -120,7 +120,7 @@ module.exports = function(Intervention) {
             var registredList = document.registred;
             if(!registredList){
               sender.send(
-                pushEvent, {'registrationTokens': registredList},
+                message, {'registrationTokens': registredList},
                 function (err, response) {
                   //TODO throw error
                 });
@@ -136,7 +136,7 @@ module.exports = function(Intervention) {
     description: 'send push event to registred devices of the current interv.',
     accepts:[
       {arg: 'id', type: 'any', http: {source: 'path'}},
-      {arg: 'registration', type: 'object', http: {source: 'body'}}
+      {arg: 'message', type: 'object', http: {source: 'body'}}
     ],
     http: {verb: 'post', path: '/:id/push/'}
   });
