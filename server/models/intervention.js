@@ -125,6 +125,7 @@ module.exports = function(Intervention) {
                 message, {'registrationTokens': registredList},
                 function (err, response) {
                   //TODO throw error
+                  callback(null,response);
                 });
             }
           });
