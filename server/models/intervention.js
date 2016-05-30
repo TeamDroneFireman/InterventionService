@@ -122,7 +122,7 @@ module.exports = function(Intervention) {
             var registredList = document.registred;
             if(!registredList){
               sender.send(
-                message, {'registrationTokens': registredList},
+                new gcm.Message(message), {'registrationTokens': registredList},
                 function (err, response) {
                   //TODO throw error
                   callback(null,response);
