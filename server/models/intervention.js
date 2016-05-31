@@ -123,6 +123,7 @@ module.exports = function(Intervention) {
    *
    * @param interventionId
    * @param message Object contains topic and changed object Id
+   * @param callback 
    */
   Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
@@ -200,4 +201,34 @@ module.exports = function(Intervention) {
     error.code = 'MODEL_NOT_FOUND';
     cb(error);
   }
+
+  Intervention.meansAndDroneNotValidate = function (id,cb) {
+    Intervention.findById(id,function (err,intervention){
+      if (intervention !== null) {
+        var droneService = Intervention.app.dataSources.droneService;
+        var meanService = Intervention.app.dataSources.meanService;
+        droneService.getAskedDronesByIntervention(id, function (err, response) {
+          if (err) throw err;
+          if (response.error) 
+            next('> response error: ' + response.error.stack);
+          intervention.drones = response;
+          meanService.getAskedMeansByIntervention(id, function (err, response) {
+            if (err) throw err;
+            if (response.error)
+              next('> response error: ' + response.error.stack);
+            intervention.means = response;
+            cb(null, intervention);
+          });
+        });
+      }
+      else cb(null, null);
+    });
+  };
+  
+  Intervention.remoteMethod('meansAndDroneNotValidate', {
+    description: 'Get all asked means and drones for an intervention',
+    accepts: {arg: 'id', type: 'any', http: {source: 'path'}},
+    returns: {arg: 'data', type: 'array', root: true},
+    http: {verb: 'post', path: '/:id/element/notValidate'}
+  });
 };

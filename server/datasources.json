@@ -33,6 +33,15 @@
         "functions": {
           "findByInterventionId": ["id"]
         }
+      },
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://localhost:3003/api/Drones/intervention/{id}/asked"
+        },
+        "functions": {
+          "getAskedDronesByIntervention": ["id"]
+        }
       }
     ]
   },
@@ -62,6 +71,15 @@
         },
         "functions": {
           "findByInterventionId": ["id"]
+        }
+      },
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://localhost:3002/api/Means/intervention/{id}/asked"
+        },
+        "functions": {
+          "getAskedMeansByIntervention": ["id"]
         }
       }
     ]
