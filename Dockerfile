@@ -7,6 +7,6 @@ RUN apk add nodejs
 
 WORKDIR /app
 ADD . /app
-RUN npm install
+RUN npm install && npm install -g forever
 EXPOSE 3000
-ENTRYPOINT [ "node", "." ]
+ENTRYPOINT [ "forever", "." ]
