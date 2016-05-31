@@ -43,6 +43,19 @@
         "functions": {
           "findByInterventionId": ["id"]
         }
+      },{
+        "template": {
+          "method": "GET",
+          "url": "http://projetm2gla.istic.univ-rennes1.fr/api/Drones/intervention/{id}/asked",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json",
+            "Host": "drone.docker.localhost"
+          }
+        },
+        "functions": {
+          "getAskedDronesByIntervention": ["id"]
+        }
       }
     ]
   },
@@ -82,6 +95,22 @@
         },
         "functions": {
           "findByInterventionId": ["id"]
+        }
+      },
+      {
+        "template": {
+          "method": "GET",
+          "url": "http://projetm2gla.istic.univ-rennes1.fr/api/Means/intervention/{id}/asked",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json",
+            "Host": "mean.docker.localhost"
+          }
+        },
+        "functions": {
+          "getAskedMeansByIntervention": [
+            "id"
+          ]
         }
       }
     ]
