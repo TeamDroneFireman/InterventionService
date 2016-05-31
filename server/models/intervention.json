@@ -19,10 +19,6 @@
     "groupKey": {
       "type": "string"
     },
-    "home": {
-      "type": "object",
-      "required": true
-    },
     "location": {
       "type": "object",
       "required": true
