@@ -135,7 +135,7 @@ module.exports = function(Intervention) {
    *
    * @param interventionId
    * @param message Object contains topic and changed object Id
-   * @param callback 
+   * @param callback
    */
   Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
@@ -182,33 +182,42 @@ module.exports = function(Intervention) {
     cb(error);
   }
 
-  Intervention.meansAndDroneNotValidate = function (id,cb) {
-    Intervention.findById(id,function (err,intervention){
-      if (intervention !== null) {
-        var droneService = Intervention.app.dataSources.droneService;
-        var meanService = Intervention.app.dataSources.meanService;
-        droneService.getAskedDronesByIntervention(id, function (err, response) {
-          if (err) throw err;
-          if (response.error) 
-            next('> response error: ' + response.error.stack);
-          intervention.drones = response;
-          meanService.getAskedMeansByIntervention(id, function (err, response) {
+  function meansAndDroneNotValidateById (intervention, cb) {
+    var droneService = Intervention.app.dataSources.droneService;
+    var meanService = Intervention.app.dataSources.meanService;
+    droneService.getAskedDronesByIntervention(intervention.id,
+      function (err, response) {
+        if (err) throw err;
+        if (response.error)
+          next('> response error: ' + response.error.stack);
+        intervention.drones = response;
+        meanService.getAskedMeansByIntervention(intervention.id,
+          function (err, response) {
             if (err) throw err;
             if (response.error)
               next('> response error: ' + response.error.stack);
             intervention.means = response;
-            cb(null, intervention);
+            cb(intervention);
           });
+      });
+  }
+
+  Intervention.meansAndDroneNotValidate = function (callback) {
+    var array = [];
+    Intervention.find(function (err,interventions){
+      var i = interventions.length;
+      interventions.forEach(function(intervention){
+        meansAndDroneNotValidateById(intervention, function(inter){
+          array.push(inter);
+          if (--i === 0) callback(null, array);
         });
-      }
-      else cb(null, null);
+      });
     });
   };
-  
+
   Intervention.remoteMethod('meansAndDroneNotValidate', {
     description: 'Get all asked means and drones for an intervention',
-    accepts: {arg: 'id', type: 'any', http: {source: 'path'}},
     returns: {arg: 'data', type: 'array', root: true},
-    http: {verb: 'post', path: '/:id/element/notValidate'}
+    http: {verb: 'post', path: '/element/notValidate'}
   });
 };
