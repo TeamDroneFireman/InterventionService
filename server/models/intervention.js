@@ -1,6 +1,7 @@
 module.exports = function(Intervention) {
 
-    const PRIVATE_CONST_PATH = '/root/teamdronefireman/gcm/private.json';
+    const PRIVATE_CONST_PATH = '/home/kozhaa/Documents/Master2/'+
+    'project/API_Provider/'+'InterventionService/private.json';
 
     Intervention.disableRemoteMethod('deleteById', true);
     Intervention.disableRemoteMethod('updateAll', true);
@@ -80,15 +81,29 @@ module.exports = function(Intervention) {
         Intervention.findById(
           registration.interventionId,
           function (err, document) {
-          var registredList = document.registred;
-          if (!registredList) {
-            registredList = [registration.registrationId];
-          } else {
-            registredList.push(registration.registrationId);
-          }
-          document.updateAttribute('registred', registredList);
-          callback(null, document);
-        });
+            var jsonfile = require('jsonfile');
+            jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
+              var key = obj.gcmkey;
+              if('groupKey' in document){
+                var groupKey = document.groupKey;
+                var groupName = document.name;
+                Intervention.app.datasources.gcmService
+                .addToList(key,
+                'add',
+                groupKey,
+                groupName,
+                registration.registrationId,
+                function(err, response){
+                  callback(err,response);
+                });
+              }else{
+                var error = new Error('GCM Group key does not exists');
+                error.statusCode = error.status = 404;
+                error.code = 'GCM_KEY_NOT_FOUND';
+                callback(error);
+              }
+            });
+          });
       }else{
         callback(null, {});
       }
@@ -112,21 +127,15 @@ module.exports = function(Intervention) {
   Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
       if(response){
-        //get intervention
         Intervention.findById(interventionId, function(err, document){
-          var gcm = require('node-gcm');
           var jsonfile = require('jsonfile');
           jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
-            var sender = new gcm.Sender(obj.GCMKEY);
-            var registredList = document.registred;
-            if(!registredList){
-              sender.send(
-                new gcm.Message(message), {'registrationTokens': registredList},
-                function (err, response) {
-                  //TODO throw error
-                  callback(null,response);
-                });
-            }
+            var key = obj.gcmkey;
+            var registredKey = document.registredKey;
+            Intervention.app.datasources.gcmService
+            .sendMessage(key, registredKey,message, function(err, response){
+              callback(err,response);
+            });
           });
         });
       }
@@ -142,6 +151,38 @@ module.exports = function(Intervention) {
     ],
     http: {verb: 'post', path: '/:id/push/'}
   });
+
+  /***
+  * Create a GCM group after document creation
+  */
+  Intervention.afterRemote(
+    'create',
+    function(ctx, unused, next){
+      if(ctx.res.status === 200){
+        var groupName = ctx.res.body.name;
+        var jsonfile = require('jsonfile');
+        jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
+          var key = obj.gcmkey;
+          Intervention.app.datasources.gcmService
+          .manageList(key, 'create', null, function(err, response){
+            if(err){
+              next(err);
+            }
+            Intervention.updateAll(
+            {'id': ctx.res.body.id},
+            {'registredKey': response.body.notification_key},
+            function(err, info){
+              if(err){
+                next(err);
+              }
+              next();
+            });
+          });
+        });
+      }
+      next();
+    }
+  );
 
   /*!
    * Convert null callbacks to 404 error objects.
