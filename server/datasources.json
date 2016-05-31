@@ -65,5 +65,48 @@
         }
       }
     ]
+  },
+  "gcmService": {
+    "name": "gcmService",
+    "connector": "rest",
+    "operations": [
+      {
+        "template": {
+          "method": "POST",
+          "url": "https://gcm-http.googleapis.com/gcm/notification",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json",
+            "Authorization":"key={key}"
+          },
+          "body":{
+            "operation":"{operation}",
+            "notification_key_name": "{key_name}",
+            "registration_ids":"{registredList}"
+          }
+        },
+        "functions": {
+          "manageList": ["key", "operation", "registredList"]
+        }
+      },{
+        "template": {
+          "method": "POST",
+          "url": "https://gcm-http.googleapis.com/gcm/send",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json",
+            "Authorization":"key={key}"
+          },
+          "body":{
+            "notification_key_name": "{key_name}",
+            "to":"{key_name}",
+            "data": "{message}"
+          }
+        },
+        "functions": {
+          "sendMessage": ["key", "key_name", "message"]
+        }
+      }
+    ]
   }
 }
