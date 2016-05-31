@@ -6,7 +6,6 @@ module.exports = function(Intervention) {
     Intervention.disableRemoteMethod('updateAll', true);
     Intervention.disableRemoteMethod('createChangeStream', true);
     Intervention.disableRemoteMethod('findOne', true);
-    Intervention.disableRemoteMethod('exists', true);
 
     /***
     * auth required before all methods
