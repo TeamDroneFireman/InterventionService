@@ -69,43 +69,55 @@ module.exports = function(Intervention) {
 
   /***
    * Register a new device to the push service of the given intervention
-   * non atomic operation, Loopback doesn't handle $addToSet mongo operator!
    *
-   * @param registration object contains interventionId and new registration Key
+   * @param registration object contains interventionId and registrationId
    * @param callback
    */
   Intervention.register = function(registration, callback){
     Intervention.exists(registration.interventionId, function(err, response) {
       if (response) {
-        //get document registred devices
         Intervention.findById(
-          registration.interventionId,
-          function (err, document) {
-            var jsonfile = require('jsonfile');
-            jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
-              var key = obj.gcmkey;
-              if('groupKey' in document){
-                var groupKey = document.groupKey;
-                var groupName = document.name;
-                Intervention.app.datasources.gcmService
-                .addToList(key,
-                'add',
-                groupKey,
-                groupName,
-                registration.registrationId,
-                function(err, response){
-                  callback(err,response);
+        registration.interventionId,
+        function (err, intervention) {
+          var jsonfile = require('jsonfile');
+          jsonfile.readFile(
+          PRIVATE_CONST_PATH,
+          function(err, obj) {
+            var key = obj.gcmkey;
+            var deviceIds = [registration.registrationId];
+            var groupName = intervention.name;
+
+            //in case of first registration
+            if(!intervention.hasOwnProperty('groupKey')){
+              Intervention.app.datasources.gcmService
+              .createGroup(obj.gcmkey,
+              groupName,
+              deviceIds,
+              function(err, response){
+                if (response.error) callback(response.error);
+                Intervention.updateAll(
+                {'id': intervention.id},
+                {'registredKey': response.body.notification_key},
+                function(err, info){
+                  callback(err,info);
                 });
-              }else{
-                var error = new Error('GCM Group key does not exists');
-                error.statusCode = error.status = 404;
-                error.code = 'GCM_KEY_NOT_FOUND';
-                callback(error);
-              }
-            });
+              });
+
+            }else{
+              var groupKey = intervention.groupKey;
+              Intervention.app.datasources.gcmService
+              .addToGroup(key,
+              groupName,
+              groupKey,
+              registration.registrationId,
+              function(err, response){
+                callback(err,response);
+              });
+            }
           });
+        });
       }else{
-        callback(null, {});
+        callback(null,{});
       }
     });
   };
@@ -128,11 +140,11 @@ module.exports = function(Intervention) {
   Intervention.push = function(interventionId, message, callback){
     Intervention.exists(interventionId, function(err, response){
       if(response){
-        Intervention.findById(interventionId, function(err, document){
+        Intervention.findById(interventionId, function(err, intervention){
           var jsonfile = require('jsonfile');
           jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
             var key = obj.gcmkey;
-            var registredKey = document.registredKey;
+            var registredKey = intervention.groupKey;
             Intervention.app.datasources.gcmService
             .sendMessage(key, registredKey,message, function(err, response){
               callback(err,response);
@@ -152,38 +164,6 @@ module.exports = function(Intervention) {
     ],
     http: {verb: 'post', path: '/:id/push/'}
   });
-
-  /***
-  * Create a GCM group after document creation
-  */
-  Intervention.afterRemote(
-    'create',
-    function(ctx, unused, next){
-      if(ctx.res.status === 200){
-        var groupName = ctx.res.body.name;
-        var jsonfile = require('jsonfile');
-        jsonfile.readFile(PRIVATE_CONST_PATH, function(err, obj) {
-          var key = obj.gcmkey;
-          Intervention.app.datasources.gcmService
-          .manageList(key, 'create', null, function(err, response){
-            if(err){
-              next(err);
-            }
-            Intervention.updateAll(
-            {'id': ctx.res.body.id},
-            {'registredKey': response.body.notification_key},
-            function(err, info){
-              if(err){
-                next(err);
-              }
-              next();
-            });
-          });
-        });
-      }
-      next();
-    }
-  );
 
   /*!
    * Convert null callbacks to 404 error objects.
