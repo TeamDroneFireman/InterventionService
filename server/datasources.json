@@ -76,17 +76,38 @@
           "url": "https://gcm-http.googleapis.com/gcm/notification",
           "headers": {
             "accepts": "application/json",
-            "content-type": "application/json",
-            "Authorization":"key={key}"
+            "Content-Type": "application/json",
+            "Authorization":"key={key}",
+            "project_id":"792459040130"
           },
           "body":{
-            "operation":"{operation}",
-            "notification_key_name": "{key_name}",
-            "registration_ids":"{registredList}"
+            "operation":"create",
+            "notification_key_name": "{groupName}",
+            "registration_ids":"{deviceId}"
           }
         },
         "functions": {
-          "manageList": ["key", "operation", "registredList"]
+          "createGroup": ["key", "groupName", "deviceId"]
+        }
+      },{
+        "template": {
+          "method": "POST",
+          "url": "https://gcm-http.googleapis.com/gcm/notification",
+          "headers": {
+            "accepts": "application/json",
+            "content-type": "application/json",
+            "Authorization":"key={key}",
+            "project_id":"792459040130"
+          },
+          "body":{
+            "operation":"add",
+            "notification_key_name": "{groupName}",
+            "notification_key": "{groupKey}",
+            "registration_ids": "{deviceId}"
+          }
+        },
+        "functions": {
+          "addToGroup": ["key", "groupName", "groupKey", "deviceId"]
         }
       },{
         "template": {
