@@ -216,8 +216,8 @@ module.exports = function(Intervention) {
   };
 
   Intervention.remoteMethod('meansAndDroneNotValidate', {
-    description: 'Get all asked means and drones for an intervention',
+    description: 'Get all asked means and drones for all intervention',
     returns: {arg: 'data', type: 'array', root: true},
-    http: {verb: 'post', path: '/element/notValidate'}
+    http: {verb: 'get', path: '/element/notValidate'}
   });
 };
