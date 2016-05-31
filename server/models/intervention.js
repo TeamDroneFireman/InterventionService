@@ -1,7 +1,6 @@
 module.exports = function(Intervention) {
 
-    const PRIVATE_CONST_PATH = '/home/kozhaa/Documents/Master2/'+
-    'project/API_Provider/'+'InterventionService/private.json';
+    const PRIVATE_CONST_PATH = '/root/teamdronefireman/gcm/private.json';
 
     Intervention.disableRemoteMethod('deleteById', true);
     Intervention.disableRemoteMethod('updateAll', true);
