@@ -98,7 +98,7 @@ module.exports = function(Intervention) {
                 if (response.error) callback(response.error);
                 Intervention.updateAll(
                 {'id': intervention.id},
-                {'registredKey': response.body.notification_key},
+                {'registredKey': response.notification_key},
                 function(err, info){
                   callback(err,info);
                 });
