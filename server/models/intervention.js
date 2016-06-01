@@ -93,6 +93,8 @@ module.exports = function(Intervention) {
               groupName,
               deviceIds,
               function(err, response){
+                console.log(err);
+                console.log(response);
                 if (response.error) callback(response.error);
                 Intervention.updateAll(
                 {'id': intervention.id},
