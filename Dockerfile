@@ -3,7 +3,8 @@
 # Awesome tiny node image
 FROM alpine
 RUN apk update && apk upgrade
-RUN apk add nodejs
+RUN apk add nodejs tzdata
+RUN cp /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
 WORKDIR /app
 ADD . /app
